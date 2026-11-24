@@ -13,7 +13,11 @@ def main():
         print("Usage: python3 main.py <path_to_book>")
         sys.exit(1)
     book_path = sys.argv[1]
-    book_content = get_book_text(book_path)
+    try:
+        book_content = get_book_text(book_path)
+    except OSError as error:
+        print(f"Could not read book '{book_path}': {error.strerror}", file=sys.stderr)
+        sys.exit(1)
     num_words = get_words_count(book_content)
     characters_count = get_characters_count(book_content)
     sorted_characters = get_sorted_characters(characters_count)
@@ -26,4 +30,5 @@ def main():
         print(f"{char["char"]}: {char["num"]}")
     print("============= END ===============")
 
-main()
+if __name__ == "__main__":
+    main()
